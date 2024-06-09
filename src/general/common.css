@@ -1,0 +1,27 @@
+:root {
+  --var-smart-search-main: black;
+  --var-smart-search-disabled-text: #BEBEBE;
+  --var-smart-search-background: white;
+
+  --var-smart-search-faded: #333333;
+  --var-smart-search-header: #efefef;
+  --var-smart-search-smoke: #919191;
+  --var-smart-search-stone: #BEBEBE;
+  --var-smart-search-disabled: #cacaca;
+  --var-smart-search-selected: #D7D7D7;
+  --var-smart-search-hover: #DDDDDD;
+  --var-smart-search-light-gray: #FAFAFA;
+  --var-smart-search-highlight: #fff469;
+  --var-smart-search-focus: #0098D2;
+  --var-smart-search-search: #189bcd;
+
+  --var-smart-search-icon: #444444;
+
+  --var-smart-search-tool-tip: rgb(98, 98, 98);
+
+  --var-smart-search-operator: #5A6F89;
+
+  --var-smart-search-link: #007099;
+  --var-smart-search-choosen: #009970;
+  --var-smart-search-error: #E60000;
+}

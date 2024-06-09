@@ -1,0 +1,22 @@
+.activePillViewMain {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 5px);
+  padding: 2px 4px 2px 4px;
+  column-gap: 5px;
+  border-radius: 4px;
+  font-weight: 900;
+  background-color: #626262;
+  color: var(--var-smart-search-background);
+}
+
+.activePillView {
+  flex-grow: 1;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.activePillViewText {
+  margin-right: 5px;
+}

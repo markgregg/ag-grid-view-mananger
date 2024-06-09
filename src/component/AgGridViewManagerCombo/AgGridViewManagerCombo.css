@@ -1,0 +1,86 @@
+@import '../../general/common.css';
+
+.agViewManagerComboMain svg {
+  background-color: var(--var-smart-search-background);
+  color: var(--var-smart-search-main);
+  border-radius: 3px;
+  font-size: small;
+}
+
+.agViewManagerComboMain svg:hover {
+  background-color: var(--var-smart-search-hover);
+  color: var(--var-smart-search-faded);
+}
+
+.agViewManagerComboMain {
+  position: relative;
+  display: flex;
+  border-top: 2px solid var(--var-smart-search-smoke);
+  border-left: 2px solid var(--var-smart-search-smoke);
+  border-bottom: 2px solid var(--var-smart-search-stone);
+  border-right: 2px solid var(--var-smart-search-stone);
+  border-radius: 5px;
+  background: var(--var-smart-search-background);
+  color: var(--var-smart-search-disabled-text);
+  align-items: center;
+  padding: 2px;
+}
+
+.agViewManagerComboMain:hover {
+  border: 2px solid var(--var-smart-search-icon);
+}
+
+.agViewManagerComboMain:focus-within {
+  border: 2px solid var(--var-smart-search-focus);
+}
+
+.agViewManagerComboMain:valid-within {
+  border: 2px solid var(--var-smart-search-icon);
+}
+
+.agViewManagerComboBox {
+  width: 100%;
+  padding: 3px;
+}
+
+.agViewManagerComboInput {
+  border: none;
+  outline: none;
+  padding: 0px;
+  border-width: 0px;
+  border-style: none;
+  padding-block: 0px;
+  padding-inline: 0px;
+}
+
+.agViewManagerComboList {
+  position: absolute;
+  border-top: 2px solid var(--var-smart-search-smoke);
+  border-left: 2px solid var(--var-smart-search-smoke);
+  border-bottom: 2px solid var(--var-smart-search-stone);
+  border-right: 2px solid var(--var-smart-search-stone);
+  border-radius: 5px;
+  background: var(--var-smart-search-background);
+  color: var(--var-smart-search-disabled-text);
+  align-items: center;
+  padding: 2px;
+  box-shadow: 3px 3px 8px 1px rgba(0, 0, 0, 0.73);
+}
+
+.agViewManagerComboMain ul {
+  list-style-type: none;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+  width: 100%;
+}
+
+.agViewManagerComboMain li {
+  display: flex;
+  column-gap: 5px;
+  padding-left: px;
+  align-items: center;
+  width: 100%;
+}

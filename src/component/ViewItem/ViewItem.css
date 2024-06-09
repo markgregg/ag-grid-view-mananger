@@ -1,0 +1,12 @@
+.viewItem {
+  color: var(--var-smart-search-link);
+  flex-grow: 1;
+}
+
+.viewItem:hover {
+  color: var(--var-smart-search-focus);
+}
+
+.viewItemRenamewText {
+  font-size: xx-small;
+}

@@ -1,0 +1,41 @@
+.mainContainer {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  height: 90%;
+  width: 90%;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.mainSearchbar {
+  width: 100%;
+  min-height: 30px;
+  max-height: 90px;
+}
+
+.mainContent {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  column-gap: 5px;
+  max-height: calc(100% - 36px);
+  min-height: calc(100% - 95px);
+}
+
+.mainViewManager {
+  width: 200px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.agGrid {
+  height: 100%;
+  flex-grow: 1;
+  font-size: small;
+}
