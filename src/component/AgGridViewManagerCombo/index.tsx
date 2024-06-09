@@ -36,6 +36,7 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
     });
     const [changed, setChanged] = React.useState<boolean>(false);
     const [editting, setEditting] = React.useState<boolean>(false);
+    const [renaming, setRenaming] = React.useState<boolean>(false);
     const [active, setActive] = React.useState<boolean>(false);
 
     React.useEffect(() => {
@@ -164,6 +165,30 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
 
     const handleTextChange = (text: string) => {
       setChanged(true);
+      setViewName(text);
+    }
+
+    const handleRename = () => {
+      setRenaming(true);
+      setViewName(activeView.name);
+    }
+
+    const handleRenameComplete = () => {
+      if (viewName !== '' && !views.find(v => v.name === viewName)) {
+        setRenaming(false);
+        setViewName('');
+        const updateView = {
+          ...activeView,
+          name: viewName,
+          changed: false,
+        };
+        persistView(persistence, updateView);
+        setViews(views.map((v) => v.name === activeView.name
+          ? updateView
+          : v
+        ));
+        setActiveView(updateView);
+      }
     }
 
     return (
@@ -171,13 +196,13 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
         id="agViewManagerCombo"
         className="agViewManagerComboMain"
         onMouseEnter={() => setActive(true)}
-        onMouseLeave={() => setActive(true)}
+        onMouseLeave={() => setActive(false)}
       >
         <span >
           View
         </span>
         <div className='agViewManagerComboBox'>
-          {editting
+          {editting || renaming
             ? <>
               <input
                 className='agViewManagerComboInput'
@@ -185,7 +210,10 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
                 onKeyDown={(e) => handleKeyPress(e)}
                 onChange={(e) => handleTextChange(e.target.value)}
               />
-              <IoIosAdd onClick={() => handleSaveNewView()} />
+              {renaming
+                ? <TiTick onClick={() => handleRenameComplete()} />
+                : <IoIosAdd onClick={() => handleSaveNewView()} />
+              }
             </>
             : <ActivePillView
               view={activeView}
@@ -196,7 +224,7 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
         </div>
         {active && <div className='agViewManagerComboList'>
           <ul>
-            {views.map(view => (
+            {views.filter(v => viewName === '' || v.name.includes(viewName)).map(view => (
               <ViewItem
                 key={view.id}
                 view={view}

@@ -12,6 +12,7 @@ interface ActivePillViewProperties {
 export default function ActivePillView({
   view,
   onSave,
+  onRename,
 }: ActivePillViewProperties): JSX.Element {
   const {
     name,
@@ -27,10 +28,10 @@ export default function ActivePillView({
         {changed && <CiSaveDown2
           onClick={() => onSave()}
         />}
-        {<MdDriveFileRenameOutline
-          onClick={() => onRename()}
-        />}
       </span>
+      {<MdDriveFileRenameOutline
+        onClick={() => onRename()}
+      />}
     </div>
   )
 }

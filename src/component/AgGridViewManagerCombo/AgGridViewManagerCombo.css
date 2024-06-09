@@ -65,6 +65,11 @@
   align-items: center;
   padding: 2px;
   box-shadow: 3px 3px 8px 1px rgba(0, 0, 0, 0.73);
+  left: 0px;
+  top: 100%;
+  width: calc(100% - 10px);
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .agViewManagerComboMain ul {
