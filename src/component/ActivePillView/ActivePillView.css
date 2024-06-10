@@ -1,22 +1,37 @@
 .activePillViewMain {
   display: flex;
   align-items: center;
-  width: calc(100% - 5px);
-  padding: 2px 4px 2px 4px;
+  width: calc(100% - 4px);
+  padding-right: 4px;
   column-gap: 5px;
   border-radius: 4px;
-  font-weight: 900;
   background-color: #626262;
   color: var(--var-smart-search-background);
 }
 
 .activePillView {
-  flex-grow: 1;
+  width: calc(100% - 24px);
   align-items: center;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 }
 
 .activePillViewText {
-  margin-right: 5px;
+  margin-left: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.activePillViewMainIcon {
+  color: var(--var-smart-search-background);
+  border-radius: 3px;
+  font-size: medium;
+  z-index: 10;
+}
+
+.activePillViewMainIcon:hover {
+  background-color: var(--var-smart-search-background);
+  color: var(--var-smart-search-icon);
 }

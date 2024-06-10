@@ -8,10 +8,10 @@ import {
   IRowNode,
 } from 'ag-grid-community';
 import AgGridViewManagerList from '@/component/AgGridViewManagerList';
+import AgGridViewManagerCombo from '@/component/AgGridViewManagerCombo';
 import Bond from '@/TestApp/types/Bond';
 import { bonds } from '@/TestApp/data/bonds';
 import { columns } from './AppFunctions';
-
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridViewManagerApi, View } from '@/types';
@@ -22,7 +22,6 @@ import {
   ReactSmartSearchAgGrid,
 } from 'react-smart-search';
 import './App.css';
-import AgGridViewManagerCombo from '@/component/AgGridViewManagerCombo';
 
 export default function App(): JSX.Element {
   const agGridViewManagerApiRef = React.useRef<AgGridViewManagerApi | null>(null);
@@ -69,32 +68,34 @@ export default function App(): JSX.Element {
 
   return (
     <div className="mainContainer">
-      <div className="mainSearchbar">
-        <ReactSmartSearchAgGrid
-          matchers={matchers}
-          onChanged={(m, f) => matchersChanged(m, f)}
-          maxMatcherWidth={250}
-          gridApi={gridApi}
+      <div className="mainToolBar">
+        <AgGridViewManagerCombo
+          ref={agGridViewManagerApiRef}
           columnApi={columnApi}
-          keyboardActivityTimeout={1000}
+          persistence={localStoragePersistence('TEST_APP')}
+          onSelect={(v) => handleSelect(v)}
+          style={{ width: '200px' }}
         />
+        <div className='mainSearchbar'>
+          <ReactSmartSearchAgGrid
+            matchers={matchers}
+            onChanged={(m, f) => matchersChanged(m, f)}
+            maxMatcherWidth={250}
+            gridApi={gridApi}
+            columnApi={columnApi}
+            keyboardActivityTimeout={1000}
+          />
+        </div>
       </div>
       <div className="mainContent">
-        <div className="mainViewManager">
-          {/*<AgGridViewManagerList
-            ref={agGridViewManagerApiRef}
-            columnApi={columnApi}
-            persistence={localStoragePersistence('TEST_APP')}
-            onSelect={(v) => handleSelect(v)}
-
-  />*/}
-          <AgGridViewManagerCombo
+        {/*<div className="mainViewManager">
+          <AgGridViewManagerList
             ref={agGridViewManagerApiRef}
             columnApi={columnApi}
             persistence={localStoragePersistence('TEST_APP')}
             onSelect={(v) => handleSelect(v)}
           />
-        </div>
+        </div>*/}
         <div className="ag-theme-alpine agGrid">
           <AgGridReact
             onGridReady={handleGridReady}

@@ -25,15 +25,22 @@ export default function ViewItem({
   const [rename, setRename] = React.useState<boolean>(false);
   const [active, setActive] = React.useState<boolean>(false);
 
-  const handleReanme = () => {
+  const handleReanme = (event: React.MouseEvent) => {
     setNewName(name);
     setRename(true);
+    event.stopPropagation();
   }
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       completeRename();
+      event.stopPropagation();
     }
+  }
+
+  const handleCompleteRename = (event: React.MouseEvent) => {
+    completeRename();
+    event.stopPropagation();
   }
 
   const completeRename = () => {
@@ -52,17 +59,28 @@ export default function ViewItem({
     setActive(false);
   }
 
+  const handleDelete = (event: React.MouseEvent) => {
+    onDelete();
+    event.stopPropagation();
+  }
+
+  const handleSelect = (event: React.MouseEvent) => {
+    onSelect();
+    event.stopPropagation();
+  }
+
   return (
     <li
       onMouseEnter={() => handleMouseEnter()}
       onMouseLeave={() => handleMouseLeave()}
     >
       {!rename && <RxCross2
-        onClick={() => onDelete()}
+        className="agViewManagerComboMainIcon"
+        onClick={(e) => handleDelete(e)}
       />}
       {!rename && <span
         className="viewItem"
-        onClick={() => onSelect()}
+        onClick={(e) => handleSelect(e)}
       >{name}</span>
       }
       {rename && <>
@@ -74,12 +92,12 @@ export default function ViewItem({
           onKeyDown={(e) => handleKeyPress(e)}
         />
         {<TiTick
-          onClick={() => completeRename()}
+          onClick={(e) => handleCompleteRename(e)}
         />}
       </>
       }
       {onRename && !rename && active && <MdDriveFileRenameOutline
-        onClick={() => handleReanme()}
+        onClick={(e) => handleReanme(e)}
       />}
     </li>
   )

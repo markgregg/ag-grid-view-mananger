@@ -1,37 +1,59 @@
 import { CiSaveDown2 } from "react-icons/ci";
-import { MdDriveFileRenameOutline } from "react-icons/md";
 import { View } from '@/types';
 import './ActivePillView.css';
+import PopupMenu from "../PopupMenu";
 
 interface ActivePillViewProperties {
   view: View;
   onSave: () => void;
   onRename: () => void;
+  onClone: () => void;
 }
 
 export default function ActivePillView({
   view,
   onSave,
   onRename,
+  onClone,
 }: ActivePillViewProperties): JSX.Element {
   const {
     name,
     changed,
   } = view;
 
+  const handleSave = (event: React.MouseEvent) => {
+    onSave();
+    event.stopPropagation();
+  }
+
+  const handleReanme = () => {
+    onRename();
+  }
+
+  const handleClone = () => {
+    onClone();
+  }
+
   return (
     <div className="activePillViewMain">
       <span className="activePillView">
-        <span className="activePillViewText">
+        <span
+          className="activePillViewText"
+          style={{
+            fontStyle: changed ? 'italic' : undefined,
+          }}
+        >
           {name}
         </span>
         {changed && <CiSaveDown2
-          onClick={() => onSave()}
+          className="activePillViewMainIcon"
+          onClick={(e) => handleSave(e)}
         />}
       </span>
-      {<MdDriveFileRenameOutline
-        onClick={() => onRename()}
-      />}
+      <PopupMenu
+        onRename={() => handleReanme()}
+        onClone={() => handleClone()}
+      />
     </div>
   )
 }

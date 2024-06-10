@@ -14,6 +14,7 @@ export interface AgGridViewManagerComboProps {
   persistence: Persistence;
   columnApi: ColumnApi | null; // ag-grid column api
   onSelect?: (view: View) => void;
+  style?: React.CSSProperties;
 }
 
 const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridViewManagerComboProps>(
@@ -22,7 +23,9 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
       persistence,
       columnApi,
       onSelect,
+      style,
     } = props;
+    const inputRef = React.useRef<HTMLInputElement | null>(null);
     const [viewName, setViewName] = React.useState<string>('');
     const [views, setViews] = React.useState<View[]>([]);
     const [activeView, setActiveView] = React.useState<View>({
@@ -34,7 +37,6 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
       columnGroupState: [],
       changed: false,
     });
-    const [changed, setChanged] = React.useState<boolean>(false);
     const [editting, setEditting] = React.useState<boolean>(false);
     const [renaming, setRenaming] = React.useState<boolean>(false);
     const [active, setActive] = React.useState<boolean>(false);
@@ -96,6 +98,7 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
     }
 
     const handleSelect = (view: View) => {
+      setEditting(false);
       const {
         columnState,
         columnGroupState
@@ -140,7 +143,7 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
       }
     }
 
-    const handleSaveNewView = () => {
+    const compelteSaveNew = () => {
       if (columnApi && viewName !== '' && !views.find((v) => v.name === viewName)) {
         const columnState = columnApi.getColumnState();
         const columnGroupState = columnApi.getColumnGroupState();
@@ -159,25 +162,78 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
       }
     }
 
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleSaveNewView = (event: React.MouseEvent) => {
+      event.stopPropagation();
+      compelteSaveNew();
+    }
 
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        if (renaming) {
+          completeRename();
+          return;
+        }
+        if (editting) {
+          if (viewName === '') {
+            setEditting(false);
+            setViewName('');
+            return;
+          }
+          compelteSaveNew();
+          return;
+        }
+        event.stopPropagation();
+        return;
+      }
+      if (event.key === 'Escape') {
+        setRenaming(false);
+        setEditting(false);
+        setViewName('');
+      }
     }
 
     const handleTextChange = (text: string) => {
-      setChanged(true);
       setViewName(text);
     }
 
-    const handleRename = () => {
-      setRenaming(true);
-      setViewName(activeView.name);
+    const getUniqueName = (name: string, index: number): string => {
+      const newName = `${name}${index > 0 ? ' ' + index : ''}`;
+      if (views.find(v => v.name === newName)) {
+        return getUniqueName(name, index + 1);
+      }
+      return newName;
     }
 
-    const handleRenameComplete = () => {
-      if (viewName !== '' && !views.find(v => v.name === viewName)) {
+    const handleClone = () => {
+      const name = getUniqueName(`Copy Of ${activeView.name}`, 0)
+      setRenaming(false);
+      setViewName('');
+      const clonedView: View = {
+        ...activeView,
+        id: guid(),
+        name,
+        changed: false,
+      };
+      persistView(persistence, clonedView);
+      setViews([...views, clonedView]);
+      setActiveView(clonedView);
+      handleRename(name);
+    }
+
+    const handleRename = (name?: string) => {
+      setRenaming(true);
+      setViewName(name ?? activeView.name);
+      setTimeout(() => inputRef.current?.focus(), 1);
+    }
+
+    const completeRename = () => {
+      if (viewName === activeView.name || (viewName !== '' && !views.find(v => v.name === viewName))) {
         setRenaming(false);
         setViewName('');
-        const updateView = {
+        if (viewName === activeView.name) {
+          return;
+        }
+        const updateView: View = {
           ...activeView,
           name: viewName,
           changed: false,
@@ -191,40 +247,58 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
       }
     }
 
+    const handleRenameComplete = (event: React.MouseEvent) => {
+      event.stopPropagation();
+      completeRename();
+    }
+
+    const handleEdit = (event: React.MouseEvent) => {
+      if (!editting && !renaming) {
+        setEditting(true);
+        setViewName('');
+        setTimeout(() => inputRef.current?.focus(), 1);
+      }
+      event.stopPropagation();
+    }
+
     return (
       <div
         id="agViewManagerCombo"
         className="agViewManagerComboMain"
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
+        style={style}
       >
-        <span >
-          View
-        </span>
-        <div className='agViewManagerComboBox'>
+        <div
+          className='agViewManagerComboBox'
+          onClick={(e) => handleEdit(e)}
+        >
           {editting || renaming
-            ? <>
+            ? <div className='agViewManagerComboInputBox'>
               <input
+                ref={inputRef}
                 className='agViewManagerComboInput'
                 value={viewName}
                 onKeyDown={(e) => handleKeyPress(e)}
                 onChange={(e) => handleTextChange(e.target.value)}
+                placeholder="View Name"
               />
               {renaming
-                ? <TiTick onClick={() => handleRenameComplete()} />
-                : <IoIosAdd onClick={() => handleSaveNewView()} />
+                ? <TiTick className="agViewManagerComboMainIcon" onClick={(e) => handleRenameComplete(e)} />
+                : <IoIosAdd className="agViewManagerComboMainIcon" onClick={(e) => handleSaveNewView(e)} />
               }
-            </>
+            </div>
             : <ActivePillView
               view={activeView}
               onSave={() => handleSaveView()}
               onRename={() => handleRename()}
+              onClone={() => handleClone()}
             />
           }
         </div>
         {active && <div className='agViewManagerComboList'>
           <ul>
-            {views.filter(v => viewName === '' || v.name.includes(viewName)).map(view => (
+            {views.filter(v => viewName === '' || v.name.toLowerCase().includes(viewName.toLowerCase())).map(view => (
               <ViewItem
                 key={view.id}
                 view={view}

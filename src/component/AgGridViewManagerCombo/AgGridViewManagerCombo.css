@@ -1,13 +1,14 @@
 @import '../../general/common.css';
 
-.agViewManagerComboMain svg {
+.agViewManagerComboMainIcon {
   background-color: var(--var-smart-search-background);
   color: var(--var-smart-search-main);
   border-radius: 3px;
   font-size: small;
+  z-index: 10;
 }
 
-.agViewManagerComboMain svg:hover {
+.agViewManagerComboMainIcon:hover {
   background-color: var(--var-smart-search-hover);
   color: var(--var-smart-search-faded);
 }
@@ -23,7 +24,6 @@
   background: var(--var-smart-search-background);
   color: var(--var-smart-search-disabled-text);
   align-items: center;
-  padding: 2px;
 }
 
 .agViewManagerComboMain:hover {
@@ -40,7 +40,8 @@
 
 .agViewManagerComboBox {
   width: 100%;
-  padding: 3px;
+  padding: 2px;
+  overflow: hidden;
 }
 
 .agViewManagerComboInput {
@@ -51,6 +52,14 @@
   border-style: none;
   padding-block: 0px;
   padding-inline: 0px;
+  min-width: 80px;
+}
+
+.agViewManagerComboInputBox {
+  display: flex;
+  flex-direction: row;
+  column-gap: 5px;
+  width: calc(100% - 5px);
 }
 
 .agViewManagerComboList {
@@ -70,6 +79,7 @@
   width: calc(100% - 10px);
   max-height: 300px;
   overflow-y: auto;
+  z-index: 100;
 }
 
 .agViewManagerComboMain ul {

@@ -1,0 +1,51 @@
+.popupMenu {
+  position: relative;
+  outline: none;
+}
+
+.popupMenu:focus {
+  outline: none;
+}
+
+.popupDropDownMenu {
+  position: absolute;
+  border-top: 1px solid var(--var-smart-search-smoke);
+  border-left: 1px solid var(--var-smart-search-smoke);
+  border-bottom: 1px solid var(--var-smart-search-stone);
+  border-right: 1px solid var(--var-smart-search-stone);
+  border-radius: 5px;
+  background: var(--var-smart-search-background);
+  padding: 4px;
+  box-shadow: 2px 2px 6px 1px rgba(0, 0, 0, 0.73);
+  left: 0px;
+  top: 100%;
+  overflow-y: auto;
+  z-index: 200;
+  font-size: x-small;
+  width: 80px;
+}
+
+.dropDownItem {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  color: var(--var-smart-search-main);
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.dropDownItemActive {
+  background-color: var(--var-smart-search-hover);
+}
+
+.dropDownText {
+  flex-grow: 1;
+}
+
+.dropDownItemIcon {
+  background-color: var(--var-smart-search-background);
+  color: var(--var-smart-search-main);
+  border-radius: 3px;
+  font-size: medium;
+  z-index: 10;
+}

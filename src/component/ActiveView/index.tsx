@@ -29,6 +29,7 @@ export default function ActiveView({
           {name}
         </span>
         {changed && <CiSaveDown2
+          className="activeViewIcon"
           onClick={() => onSave()}
         />}
       </span>

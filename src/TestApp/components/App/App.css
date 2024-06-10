@@ -10,10 +10,16 @@
   row-gap: 5px;
 }
 
-.mainSearchbar {
+.mainToolBar {
   width: 100%;
   min-height: 30px;
   max-height: 90px;
+  display: flex;
+  column-gap: 5px;
+}
+
+.mainSearchbar {
+  flex-grow: 1;
 }
 
 .mainContent {
