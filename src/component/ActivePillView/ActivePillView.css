@@ -13,7 +13,6 @@
   width: calc(100% - 24px);
   align-items: center;
   display: flex;
-  justify-content: center;
   overflow: hidden;
 }
 
