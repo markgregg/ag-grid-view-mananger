@@ -28,6 +28,12 @@
   border-radius: 3px;
   font-size: medium;
   z-index: 10;
+  width: 16px;
+  height: 16px;
+}
+
+.activePillViewSaveIcon {
+  color: var(--var-smart-search-highlight);
 }
 
 .activePillViewMainIcon:hover {

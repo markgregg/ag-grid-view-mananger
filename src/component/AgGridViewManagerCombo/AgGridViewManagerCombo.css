@@ -4,8 +4,9 @@
   background-color: var(--var-smart-search-background);
   color: var(--var-smart-search-main);
   border-radius: 3px;
-  font-size: small;
   z-index: 10;
+  width: 16px;
+  height: 16px;
 }
 
 .agViewManagerComboMainIcon:hover {
@@ -80,9 +81,10 @@
   max-height: 300px;
   overflow-y: auto;
   z-index: 100;
+  cursor: default;
 }
 
-.agViewManagerComboMain ul {
+.agViewManagerComboList ul {
   list-style-type: none;
   margin-block-start: 0px;
   margin-block-end: 0px;
@@ -92,10 +94,9 @@
   width: 100%;
 }
 
-.agViewManagerComboMain li {
+.agViewManagerComboList li {
   display: flex;
   column-gap: 5px;
-  padding-left: px;
   align-items: center;
   width: 100%;
 }

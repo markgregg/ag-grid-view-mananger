@@ -1,20 +1,18 @@
 import { CiSaveDown2 } from "react-icons/ci";
+import { CiMenuKebab } from "react-icons/ci";
 import { View } from '@/types';
 import './ActivePillView.css';
-import PopupMenu from "../PopupMenu";
 
 interface ActivePillViewProperties {
   view: View;
   onSave: () => void;
-  onRename: () => void;
-  onClone: () => void;
+  onShowMenu: () => void;
 }
 
 export default function ActivePillView({
   view,
   onSave,
-  onRename,
-  onClone,
+  onShowMenu,
 }: ActivePillViewProperties): JSX.Element {
   const {
     name,
@@ -26,12 +24,9 @@ export default function ActivePillView({
     event.stopPropagation();
   }
 
-  const handleReanme = () => {
-    onRename();
-  }
-
-  const handleClone = () => {
-    onClone();
+  const handleShowMenu = (event: React.MouseEvent) => {
+    onShowMenu();
+    event.stopPropagation();
   }
 
   return (
@@ -39,21 +34,25 @@ export default function ActivePillView({
       <span className="activePillView">
         <span
           className="activePillViewText"
-          style={{
-            fontStyle: changed ? 'italic' : undefined,
-          }}
+          style={changed
+            ? {
+              fontStyle: 'italic',
+            }
+            : {}
+          }
         >
           {name}
         </span>
         {changed && <CiSaveDown2
-          className="activePillViewMainIcon"
+          className="activePillViewMainIcon activePillViewSaveIcon"
           onClick={(e) => handleSave(e)}
         />}
       </span>
-      <PopupMenu
-        onRename={() => handleReanme()}
-        onClone={() => handleClone()}
-      />
+      <div
+        onClick={(e) => handleShowMenu(e)}
+      >
+        <CiMenuKebab className="activePillViewMainIcon" />
+      </div>
     </div>
   )
 }

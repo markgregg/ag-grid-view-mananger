@@ -1,6 +1,6 @@
 .viewItem {
   color: var(--var-smart-search-link);
-  flex-grow: 1;
+  width: calc(100% - 24px);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -12,5 +12,4 @@
 
 .viewItemRenamewText {
   font-size: xx-small;
-
 }

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { MdDriveFileRenameOutline } from "react-icons/md";
-import { CiMenuKebab } from "react-icons/ci";
 import { GrClone } from "react-icons/gr";
 import './PopupMenu.css';
 
@@ -8,35 +7,31 @@ import './PopupMenu.css';
 interface PopupMenuProperties {
   onRename: () => void;
   onClone: () => void;
+  onHideMenu: () => void;
 }
 
 export default function PopupMenu({
   onRename,
   onClone,
+  onHideMenu,
 }: PopupMenuProperties): JSX.Element {
   const divRef = React.useRef<HTMLDivElement | null>(null);
-  const [showMenu, setShowMenu] = React.useState<boolean>(false);
+
   const [activeIndex, setActiveIndex] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    setTimeout(() => divRef.current?.focus(), 1);
+    setActiveIndex(0);
+  }, []);
 
   const handleReanme = (event?: React.MouseEvent) => {
     onRename();
-    setShowMenu(false);
     event?.stopPropagation();
   }
 
   const handleClone = (event?: React.MouseEvent) => {
     onClone();
-    setShowMenu(false);
     event?.stopPropagation();
-  }
-
-  const handleShowMenu = (event: React.MouseEvent) => {
-    setShowMenu(!showMenu);
-    if (!showMenu) {
-      setActiveIndex(0);
-      setTimeout(() => divRef.current?.focus(), 1);
-    }
-    event.stopPropagation();
   }
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -61,7 +56,7 @@ export default function PopupMenu({
         event.preventDefault();
         break;
       case 'Escape':
-        setShowMenu(false);
+        onHideMenu();
         event.stopPropagation();
         event.preventDefault();
         break;
@@ -75,12 +70,10 @@ export default function PopupMenu({
     <div
       ref={divRef}
       className="popupMenu"
-      onClick={(e) => handleShowMenu(e)}
       tabIndex={0}
       onKeyDown={(e) => handleKeyPress(e)}
     >
-      <CiMenuKebab className="activePillViewMainIcon" />
-      {showMenu && <div className="popupDropDownMenu">
+      <div className="popupDropDownMenu">
         <div
           className={activeIndex === 0 ? 'dropDownItem dropDownItemActive' : 'dropDownItem'}
           onClick={(e) => handleReanme(e)}
@@ -91,7 +84,7 @@ export default function PopupMenu({
           onClick={(e) => handleClone(e)}
           onMouseEnter={() => setActiveIndex(1)}
         ><span className="dropDownText">Clone</span><GrClone className="dropDownItemIcon" /></div>
-      </div>}
+      </div>
     </div>
   )
 }

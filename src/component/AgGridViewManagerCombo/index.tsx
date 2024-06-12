@@ -9,6 +9,7 @@ import { deleteView, fetchActiveView, fetchViews, persistView, updateActiveView 
 import ActivePillView from '../ActivePillView';
 import ViewItem from '../ViewItem';
 import './AgGridViewManagerCombo.css';
+import PopupMenu from '../PopupMenu';
 
 export interface AgGridViewManagerComboProps {
   persistence: Persistence;
@@ -40,6 +41,7 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
     const [editting, setEditting] = React.useState<boolean>(false);
     const [renaming, setRenaming] = React.useState<boolean>(false);
     const [active, setActive] = React.useState<boolean>(false);
+    const [showMenu, setShowMenu] = React.useState<boolean>(false);
 
     React.useEffect(() => {
       if (ref) {
@@ -218,12 +220,14 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
       setViews([...views, clonedView]);
       setActiveView(clonedView);
       handleRename(name);
+      setShowMenu(false);
     }
 
     const handleRename = (name?: string) => {
       setRenaming(true);
       setViewName(name ?? activeView.name);
       setTimeout(() => inputRef.current?.focus(), 1);
+      setShowMenu(false);
     }
 
     const completeRename = () => {
@@ -261,6 +265,14 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
       event.stopPropagation();
     }
 
+    const handleShowMenu = () => {
+      setShowMenu(!showMenu);
+    }
+
+    const handleHideMenu = () => {
+      setShowMenu(false);
+    }
+
     return (
       <div
         id="agViewManagerCombo"
@@ -291,12 +303,11 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
             : <ActivePillView
               view={activeView}
               onSave={() => handleSaveView()}
-              onRename={() => handleRename()}
-              onClone={() => handleClone()}
+              onShowMenu={() => handleShowMenu()}
             />
           }
         </div>
-        {active && <div className='agViewManagerComboList'>
+        {active && !renaming && <div className='agViewManagerComboList'>
           <ul>
             {views.filter(v => viewName === '' || v.name.toLowerCase().includes(viewName.toLowerCase())).map(view => (
               <ViewItem
@@ -308,6 +319,11 @@ const AgGridViewManagerCombo = React.forwardRef<AgGridViewManagerApi, AgGridView
             ))}
           </ul>
         </div>}
+        {active && showMenu && <PopupMenu
+          onRename={() => handleRename()}
+          onClone={() => handleClone()}
+          onHideMenu={() => handleHideMenu()}
+        />}
       </div>
     );
   });

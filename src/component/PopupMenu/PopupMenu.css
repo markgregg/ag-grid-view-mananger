@@ -23,6 +23,7 @@
   z-index: 200;
   font-size: x-small;
   width: 80px;
+  cursor: default;
 }
 
 .dropDownItem {
