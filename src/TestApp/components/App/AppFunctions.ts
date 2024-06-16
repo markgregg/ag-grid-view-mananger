@@ -1,5 +1,5 @@
-import Bond from "@/TestApp/types/Bond";
-import { ColDef } from "ag-grid-community";
+import { ColDef } from 'ag-grid-community';
+import Bond from '@/TestApp/types/Bond';
 
 export const columns: ColDef<Bond>[] = [
   {

@@ -1,10 +1,8 @@
-
+import AgGridViewManager, {
+  AgGridViewManagerProps,
+} from './component/AgGridViewManager';
 
 export * from './types';
-export {
-  ReactSmartSearchAgGrid,
-  type ReactSmartSearchProps,
-  type ReactSmartSearchAgGridProps,
-  type FilterFunction,
-};
-export default ReactSmartSearch;
+export * from './persistence/localStorePersistence';
+export { AgGridViewManager, type AgGridViewManagerProps };
+export default AgGridViewManager;

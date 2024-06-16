@@ -1,4 +1,4 @@
-import { ColumnState } from "ag-grid-community";
+import { ColumnState } from 'ag-grid-community';
 
 export interface View {
   id: string;
@@ -10,6 +10,7 @@ export interface View {
     groupId: string;
     open: boolean;
   }[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customState?: any;
   changed: boolean;
 }

@@ -7,8 +7,12 @@ import {
   GridReadyEvent,
   IRowNode,
 } from 'ag-grid-community';
-import AgGridViewManagerList from '@/component/AgGridViewManagerList';
-import AgGridViewManagerCombo from '@/component/AgGridViewManagerCombo';
+import {
+  FilterFunction,
+  Matcher,
+  ReactSmartSearchAgGrid,
+} from 'react-smart-search';
+import AgGridViewManagerCombo from '@/component/AgGridViewManager';
 import Bond from '@/TestApp/types/Bond';
 import { bonds } from '@/TestApp/data/bonds';
 import { columns } from './AppFunctions';
@@ -16,15 +20,12 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridViewManagerApi, View } from '@/types';
 import { localStoragePersistence } from '@/persistence/localStorePersistence';
-import {
-  FilterFunction,
-  Matcher,
-  ReactSmartSearchAgGrid,
-} from 'react-smart-search';
 import './App.css';
 
 export default function App(): JSX.Element {
-  const agGridViewManagerApiRef = React.useRef<AgGridViewManagerApi | null>(null);
+  const agGridViewManagerApiRef = React.useRef<AgGridViewManagerApi | null>(
+    null,
+  );
   const filterRef = React.useRef<FilterFunction | null>(null);
   const [matchers, setMatchers] = React.useState<Matcher[]>([]);
   const [rowData] = React.useState<Bond[]>(bonds);
@@ -49,7 +50,7 @@ export default function App(): JSX.Element {
 
   const handleGridChanged = () => {
     agGridViewManagerApiRef.current?.viewChanged(matchers);
-  }
+  };
 
   const isExternalFilterPresent = React.useCallback(
     (): boolean => filterRef.current !== null,
@@ -64,7 +65,7 @@ export default function App(): JSX.Element {
 
   const handleSelect = (view: View) => {
     setMatchers(view.customState ?? []);
-  }
+  };
 
   return (
     <div className="mainContainer">
@@ -76,7 +77,7 @@ export default function App(): JSX.Element {
           onSelect={(v) => handleSelect(v)}
           style={{ width: '200px' }}
         />
-        <div className='mainSearchbar'>
+        <div className="mainSearchbar">
           <ReactSmartSearchAgGrid
             matchers={matchers}
             onChanged={(m, f) => matchersChanged(m, f)}
@@ -88,14 +89,6 @@ export default function App(): JSX.Element {
         </div>
       </div>
       <div className="mainContent">
-        {/*<div className="mainViewManager">
-          <AgGridViewManagerList
-            ref={agGridViewManagerApiRef}
-            columnApi={columnApi}
-            persistence={localStoragePersistence('TEST_APP')}
-            onSelect={(v) => handleSelect(v)}
-          />
-        </div>*/}
         <div className="ag-theme-alpine agGrid">
           <AgGridReact
             onGridReady={handleGridReady}

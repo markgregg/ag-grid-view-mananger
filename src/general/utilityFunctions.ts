@@ -1,4 +1,3 @@
-
 export const guid = (): string => {
   const gen = (n?: number): string => {
     const rando = (): string =>
@@ -16,4 +15,3 @@ export const guid = (): string => {
   };
   return `${gen(2)}-${gen()}-${gen()}-${gen()}-${gen(3)}`;
 };
-

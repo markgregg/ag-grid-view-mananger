@@ -1,8 +1,7 @@
-import * as React from "react";
-import { MdDriveFileRenameOutline } from "react-icons/md";
-import { GrClone } from "react-icons/gr";
+import * as React from 'react';
+import { MdDriveFileRenameOutline } from 'react-icons/md';
+import { GrClone } from 'react-icons/gr';
 import './PopupMenu.css';
-
 
 interface PopupMenuProperties {
   onRename: () => void;
@@ -27,12 +26,12 @@ export default function PopupMenu({
   const handleReanme = (event?: React.MouseEvent) => {
     onRename();
     event?.stopPropagation();
-  }
+  };
 
   const handleClone = (event?: React.MouseEvent) => {
     onClone();
     event?.stopPropagation();
-  }
+  };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     switch (event.key) {
@@ -61,30 +60,45 @@ export default function PopupMenu({
         event.preventDefault();
         break;
       default:
-        //ignore
+        // ignore
         break;
     }
-  }
+  };
 
   return (
     <div
       ref={divRef}
       className="popupMenu"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
       tabIndex={0}
       onKeyDown={(e) => handleKeyPress(e)}
     >
       <div className="popupDropDownMenu">
         <div
-          className={activeIndex === 0 ? 'dropDownItem dropDownItemActive' : 'dropDownItem'}
+          className={
+            activeIndex === 0
+              ? 'dropDownItem dropDownItemActive'
+              : 'dropDownItem'
+          }
           onClick={(e) => handleReanme(e)}
           onMouseEnter={() => setActiveIndex(0)}
-        ><span className="dropDownText">Reanme</span><MdDriveFileRenameOutline className="dropDownItemIcon" /></div>
+        >
+          <span className="dropDownText">Reanme</span>
+          <MdDriveFileRenameOutline className="dropDownItemIcon" />
+        </div>
         <div
-          className={activeIndex === 1 ? 'dropDownItem dropDownItemActive' : 'dropDownItem'}
+          className={
+            activeIndex === 1
+              ? 'dropDownItem dropDownItemActive'
+              : 'dropDownItem'
+          }
           onClick={(e) => handleClone(e)}
           onMouseEnter={() => setActiveIndex(1)}
-        ><span className="dropDownText">Clone</span><GrClone className="dropDownItemIcon" /></div>
+        >
+          <span className="dropDownText">Clone</span>
+          <GrClone className="dropDownItemIcon" />
+        </div>
       </div>
     </div>
-  )
+  );
 }
