@@ -27,29 +27,31 @@ export default function ActivePillView({
   };
 
   return (
-    <div className="activePillViewMain">
-      <span className="activePillView">
-        <span
-          className="activePillViewText"
-          style={
-            changed
-              ? {
+    <div className={changed ? 'activePillViewMain activePillViewMainChanged' : 'activePillViewMain'}>
+      <div className="activePillViewInner">
+        <span className="activePillView">
+          <span
+            className="activePillViewText"
+            style={
+              changed
+                ? {
                   fontStyle: 'italic',
                 }
-              : {}
-          }
-        >
-          {name}
+                : {}
+            }
+          >
+            {name}
+          </span>
+          {changed && (
+            <CiSaveDown2
+              className="activePillViewMainIcon activePillViewSaveIcon"
+              onClick={(e) => handleSave(e)}
+            />
+          )}
         </span>
-        {changed && (
-          <CiSaveDown2
-            className="activePillViewMainIcon activePillViewSaveIcon"
-            onClick={(e) => handleSave(e)}
-          />
-        )}
-      </span>
-      <div onClick={(e) => handleShowMenu(e)}>
-        <CiMenuKebab className="activePillViewMainIcon" />
+        <div onClick={(e) => handleShowMenu(e)}>
+          <CiMenuKebab className="activePillViewMainIcon" />
+        </div>
       </div>
     </div>
   );
