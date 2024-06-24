@@ -60,26 +60,25 @@ export default function ViewItem({
   const handleDelete = (event: React.MouseEvent) => {
     onDelete();
     event.stopPropagation();
+    event.preventDefault();
   };
 
   const handleSelect = (event: React.MouseEvent) => {
     onSelect();
     event.stopPropagation();
+    event.preventDefault();
   };
 
   return (
-    <li
-      onMouseEnter={() => handleMouseEnter()}
-      onMouseLeave={() => handleMouseLeave()}
-    >
+    <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {!rename && (
         <RxCross2
           className="agViewManagerComboMainIcon"
-          onClick={(e) => handleDelete(e)}
+          onMouseDown={handleDelete}
         />
       )}
       {!rename && (
-        <span className="viewItem" onClick={(e) => handleSelect(e)}>
+        <span className="viewItem" onClick={handleSelect}>
           {name}
         </span>
       )}
@@ -90,13 +89,13 @@ export default function ViewItem({
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            onKeyDown={(e) => handleKeyPress(e)}
+            onKeyDown={handleKeyPress}
           />
-          <TiTick onClick={(e) => handleCompleteRename(e)} />
+          <TiTick onMouseDown={handleCompleteRename} />
         </>
       )}
       {onRename && !rename && active && (
-        <MdDriveFileRenameOutline onClick={(e) => handleReanme(e)} />
+        <MdDriveFileRenameOutline onClick={handleReanme} />
       )}
     </li>
   );

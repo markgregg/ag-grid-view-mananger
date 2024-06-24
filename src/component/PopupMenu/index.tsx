@@ -26,11 +26,13 @@ export default function PopupMenu({
   const handleReanme = (event?: React.MouseEvent) => {
     onRename();
     event?.stopPropagation();
+    event?.preventDefault();
   };
 
   const handleClone = (event?: React.MouseEvent) => {
     onClone();
     event?.stopPropagation();
+    event?.preventDefault();
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -65,6 +67,19 @@ export default function PopupMenu({
     }
   };
 
+  const menuItems = [
+    {
+      text: 'Reanme',
+      Icon: MdDriveFileRenameOutline,
+      action: (e: React.MouseEvent) => handleReanme(e),
+    },
+    {
+      text: 'Clone',
+      Icon: GrClone,
+      action: (e: React.MouseEvent) => handleClone(e),
+    },
+  ];
+
   return (
     <div
       ref={divRef}
@@ -74,30 +89,20 @@ export default function PopupMenu({
       onKeyDown={(e) => handleKeyPress(e)}
     >
       <div className="popupDropDownMenu">
-        <div
-          className={
-            activeIndex === 0
-              ? 'dropDownItem dropDownItemActive'
-              : 'dropDownItem'
-          }
-          onClick={(e) => handleReanme(e)}
-          onMouseEnter={() => setActiveIndex(0)}
-        >
-          <span className="dropDownText">Reanme</span>
-          <MdDriveFileRenameOutline className="dropDownItemIcon" />
-        </div>
-        <div
-          className={
-            activeIndex === 1
-              ? 'dropDownItem dropDownItemActive'
-              : 'dropDownItem'
-          }
-          onClick={(e) => handleClone(e)}
-          onMouseEnter={() => setActiveIndex(1)}
-        >
-          <span className="dropDownText">Clone</span>
-          <GrClone className="dropDownItemIcon" />
-        </div>
+        {menuItems.map((item, index) => (
+          <div
+            className={
+              activeIndex === index
+                ? 'dropDownItem dropDownItemActive'
+                : 'dropDownItem'
+            }
+            onMouseDown={(e) => item.action(e)}
+            onMouseEnter={() => setActiveIndex(index)}
+          >
+            <span className="dropDownText">{item.text}</span>
+            <item.Icon className="dropDownItemIcon" />
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -46,18 +46,13 @@ const AgGridViewManagerCombo = React.forwardRef<
   const [active, setActive] = React.useState<boolean>(false);
   const [showMenu, setShowMenu] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    if (ref) {
-      const apiRef: AgGridViewManagerApi = {
-        viewChanged: (customState) => updateView(customState),
-      };
-      if (typeof ref === 'function') {
-        ref(apiRef);
-      } else {
-        ref.current = apiRef;
-      }
-    }
-  }, [ref, columnApi, activeView]);
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      viewChanged: (customState) => updateView(customState),
+    }),
+    [ref, columnApi, activeView],
+  );
 
   React.useEffect(() => {
     if (columnApi && views.length === 0) {
@@ -183,6 +178,7 @@ const AgGridViewManagerCombo = React.forwardRef<
 
   const handleSaveNewView = (event: React.MouseEvent) => {
     event.stopPropagation();
+    event.preventDefault();
     compelteSaveNew();
   };
 
@@ -235,7 +231,9 @@ const AgGridViewManagerCombo = React.forwardRef<
     persistView(persistence, clonedView);
     setViews([...views, clonedView]);
     setActiveView(clonedView);
-    handleRename(name);
+    setTimeout(() => {
+      handleRename(name);
+    });
     setShowMenu(false);
   };
 
@@ -248,8 +246,9 @@ const AgGridViewManagerCombo = React.forwardRef<
 
   const completeRename = () => {
     if (
-      viewName === activeView.name ||
-      (viewName !== '' && !views.find((v) => v.name === viewName))
+      viewName !== activeView.name &&
+      viewName !== '' &&
+      !views.find((v) => v.name === viewName)
     ) {
       setRenaming(false);
       setViewName('');
@@ -270,16 +269,16 @@ const AgGridViewManagerCombo = React.forwardRef<
 
   const handleRenameComplete = (event: React.MouseEvent) => {
     event.stopPropagation();
+    event.preventDefault();
     completeRename();
   };
 
-  const handleEdit = (event: React.MouseEvent) => {
+  const handleEdit = () => {
     if (!editting && !renaming) {
       setEditting(true);
       setViewName('');
       setTimeout(() => inputRef.current?.focus(), 1);
     }
-    event.stopPropagation();
   };
 
   const handleShowMenu = () => {
@@ -304,35 +303,36 @@ const AgGridViewManagerCombo = React.forwardRef<
       onMouseLeave={() => setActive(false)}
       style={style}
     >
-      <div className="agViewManagerComboBox" onClick={(e) => handleEdit(e)}>
+      <div className="agViewManagerComboBox">
         {editting || renaming ? (
           <div className="agViewManagerComboInputBox">
             <input
               ref={inputRef}
               className="agViewManagerComboInput"
               value={viewName}
-              onKeyDown={(e) => handleKeyPress(e)}
+              onKeyDown={handleKeyPress}
               onChange={(e) => handleTextChange(e.target.value)}
-              onBlur={() => handleLostFocus()}
+              onBlur={handleLostFocus}
               placeholder="View Name"
             />
             {renaming ? (
               <TiTick
                 className="agViewManagerComboMainIcon"
-                onClick={(e) => handleRenameComplete(e)}
+                onMouseDown={handleRenameComplete}
               />
             ) : (
               <IoIosAdd
                 className="agViewManagerComboMainIcon"
-                onClick={(e) => handleSaveNewView(e)}
+                onMouseDown={handleSaveNewView}
               />
             )}
           </div>
         ) : (
           <ActivePillView
             view={activeView}
-            onSave={() => handleSaveView()}
-            onShowMenu={() => handleShowMenu()}
+            onSave={handleSaveView}
+            onShowMenu={handleShowMenu}
+            onClick={handleEdit}
           />
         )}
       </div>
@@ -358,9 +358,9 @@ const AgGridViewManagerCombo = React.forwardRef<
       )}
       {active && showMenu && (
         <PopupMenu
-          onRename={() => handleRename()}
-          onClone={() => handleClone()}
-          onHideMenu={() => handleHideMenu()}
+          onRename={handleRename}
+          onClone={handleClone}
+          onHideMenu={handleHideMenu}
         />
       )}
     </div>

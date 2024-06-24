@@ -7,27 +7,44 @@ interface ActivePillViewProperties {
   view: View;
   onSave: () => void;
   onShowMenu: () => void;
+  onClick: () => void;
 }
 
 export default function ActivePillView({
   view,
   onSave,
   onShowMenu,
+  onClick,
 }: ActivePillViewProperties): JSX.Element {
   const { name, changed } = view;
 
   const handleSave = (event: React.MouseEvent) => {
     onSave();
     event.stopPropagation();
+    event.preventDefault();
   };
 
   const handleShowMenu = (event: React.MouseEvent) => {
     onShowMenu();
     event.stopPropagation();
+    event.preventDefault();
+  };
+
+  const handleClick = (event: React.MouseEvent) => {
+    onClick();
+    event.stopPropagation();
+    event.preventDefault();
   };
 
   return (
-    <div className={changed ? 'activePillViewMain activePillViewMainChanged' : 'activePillViewMain'}>
+    <div
+      className={
+        changed
+          ? 'activePillViewMain activePillViewMainChanged'
+          : 'activePillViewMain'
+      }
+      onMouseDown={handleClick}
+    >
       <div className="activePillViewInner">
         <span className="activePillView">
           <span
@@ -35,8 +52,8 @@ export default function ActivePillView({
             style={
               changed
                 ? {
-                  fontStyle: 'italic',
-                }
+                    fontStyle: 'italic',
+                  }
                 : {}
             }
           >
@@ -45,11 +62,11 @@ export default function ActivePillView({
           {changed && (
             <CiSaveDown2
               className="activePillViewMainIcon activePillViewSaveIcon"
-              onClick={(e) => handleSave(e)}
+              onMouseDown={handleSave}
             />
           )}
         </span>
-        <div onClick={(e) => handleShowMenu(e)}>
+        <div onMouseDown={handleShowMenu}>
           <CiMenuKebab className="activePillViewMainIcon" />
         </div>
       </div>
